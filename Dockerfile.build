@@ -27,7 +27,7 @@ RUN . /tmp/build-scripts/get-echost-names.sh && \
 ARG TINYPROXY_COMMIT=991e47d8ebd4b12710828b2b486535e4c25ba26c
 
 RUN cd /tmp/src/ && \
-    wget https://github.com/tinyproxy/tinyproxy/archive/${TINYPROXY_COMMIT}.zip -O tinyproxy.zip && \
+    wget https://codeload.github.com/tinyproxy/tinyproxy/zip/${TINYPROXY_COMMIT} -O tinyproxy.zip && \
     busybox unzip tinyproxy.zip && mv tinyproxy-${TINYPROXY_COMMIT} tinyproxy && cd tinyproxy && \
     ./autogen.sh --prefix=/usr && make && install -D src/tinyproxy /results/tinyproxy-ws/usr/bin/tinyproxy
 
@@ -36,8 +36,8 @@ ARG NOVNC_METHOD=min-size GOPROXY=http://proxy.golang.com.cn,direct
 RUN cd /tmp/src/ && \
     case "${NOVNC_METHOD}" in \
       min-size ) \
-        wget https://github.com/novnc/noVNC/archive/refs/heads/master.zip -O novnc.zip && \
-        wget https://github.com/novnc/websockify-other/archive/refs/heads/master.zip -O novnc-websockify.zip && \
+        wget https://codeload.github.com/novnc/noVNC/zip/refs/heads/master -O novnc.zip && \
+        wget https://codeload.github.com/novnc/websockify-other/zip/refs/heads/master -O novnc-websockify.zip && \
         busybox unzip novnc.zip && mv noVNC-master novnc && ln -s vnc.html novnc/index.html && \
         sed -i "s#UI.initSetting('path', 'websockify')#UI.initSetting('path','websockify/websockify')#" novnc/app/ui.js && \
         mkdir -p /results/novnc/usr/local/share/ && mv novnc /results/novnc/usr/local/share/novnc && \

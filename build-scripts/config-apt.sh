@@ -16,6 +16,5 @@ echo "deb $MIRROR_URL trixie main
 deb $MIRROR_URL $VERSION_CODENAME main
 deb http://deb.debian.org/debian-security $VERSION_CODENAME-security main
 deb $MIRROR_URL bullseye main
-deb http://deb.debian.org/debian-security bullseye-security main
 " > /etc/apt/sources.list &&
 rm -rf /etc/apt/sources.list.d
