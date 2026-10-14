@@ -5,14 +5,19 @@ on: workflow_dispatch
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
     - uses: actions/checkout@v2
     - uses: ./.github/actions/build-and-push-docker-image
       with:
-        registry_username: ${{secrets.DOCKERHUB_USERNAME}}
-        registry_password: ${{secrets.DOCKERHUB_TOKEN}}
-        # 镜像名跟随同一账号，避免默认推送到上游 hagb/... 因无权限而失败
-        ec_image_name: ${{secrets.DOCKERHUB_USERNAME}}/docker-easyconnect
-        atrust_image_name: ${{secrets.DOCKERHUB_USERNAME}}/docker-atrust
+        # 推送到 GHCR，登录用运行自带的 GITHUB_TOKEN，无需配置任何 Secret
+        registry: ghcr.io
+        registry_username: ${{github.actor}}
+        registry_password: ${{secrets.GITHUB_TOKEN}}
+        # GHCR 的镜像名必须全小写
+        ec_image_name: ghcr.io/lzw858/docker-easyconnect
+        atrust_image_name: ghcr.io/lzw858/docker-atrust
         # 只构建 amd64，缩短 CI 时长与磁盘占用
         archs: amd64
