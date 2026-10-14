@@ -1,7 +1,8 @@
 #!/bin/bash
 eval "$(detect-iptables.sh)"
-eval "$(detect-route.sh)"
+# vpn-config.sh 需先于 detect-route.sh 执行，以提供其所需的 VPN_TUN
 eval "$(vpn-config.sh)"
+eval "$(detect-route.sh)"
 
 forward_ports() {
 	if [ -n "$FORWARD" ]; then
@@ -221,6 +222,10 @@ init_vpn_config
 wait
 
 [ -n "$EXIT" ] && export MAX_RETRY=0
+# aTrust 有一部分进程以普通用户 sangfor 运行，需能覆写该文件，预先建好并授予其写权限避免 "Permission denied"
+touch /tmp/aTrustShell.conf
+chown root:sangfor /tmp/aTrustShell.conf
+chmod 660 /tmp/aTrustShell.conf
 start-sangfor.sh &
 wait $!
 
