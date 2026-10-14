@@ -53,7 +53,7 @@ runs:
         }
         branch="$(git branch --show-current)"
         case "$branch" in
-          master) prefix= ;;
+          master|main) prefix= ;;
           develop) prefix=dev ;;
           *) prefix="$branch" ;;
         esac
@@ -99,7 +99,7 @@ runs:
         }
         branch="$(git branch --show-current)"
         case "$branch" in
-          master)
+          master|main)
             prefix=
             ;;
           develop)
